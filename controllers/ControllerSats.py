@@ -1,4 +1,5 @@
 """Simple controller."""
+from flask import send_file, make_response
 from flask_restful import Resource
 from tokens.tokentools import verify_token
 
@@ -17,4 +18,5 @@ class ControllerSats(Resource):
         if code is not True:
             return code
 
-        return {'message': 'granted'}, 200
+        filename = 'files/nflh.h5'
+        return make_response(send_file(filename, as_attachment=True))
