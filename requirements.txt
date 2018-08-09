@@ -1,0 +1,9 @@
+Flask
+pyjwt
+pymongo
+flask-restful
+flask-pymongo
+h5py
+numpy
+matplotlib
+gunicorn

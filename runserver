@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+gunicorn -w 8 -b 10.21.9.3:5000 wsgi
