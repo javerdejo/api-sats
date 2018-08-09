@@ -10,11 +10,11 @@ class ControllerSats(Resource):
     def __init__(self, **kwargs):
         """Define constructor."""
         self.model = kwargs['model']
-        self.secret = kwargs['secret']
+        self.publicKey = kwargs['publicKey']
 
     def get(self, token):
         """Metodo get."""
-        code = verify_token(token, self.model, self.secret)
+        code = verify_token(token, self.model, self.publicKey)
         if code is not True:
             return code
 
