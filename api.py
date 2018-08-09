@@ -1,4 +1,5 @@
 """APIRest Full."""
+# loads the libraries to use flask
 from flask import Flask
 from flask_pymongo import PyMongo
 from flask_restful import Api
@@ -6,9 +7,13 @@ from flask_restful import Api
 # loads the configuration values for the api
 import config as cfg
 
-# loads model-view-controller elements
+# tools to manage tokens
 from tokens.tokentools import load_secret_keys
+
+# import models
 from models.Model import Model
+
+# import controllers
 from controllers.ControllerHome import ControllerHome
 from controllers.ControllerSats import ControllerSats
 from controllers.ControllerToken import ControllerToken

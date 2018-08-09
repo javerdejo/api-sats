@@ -23,8 +23,8 @@ class ControllerToken(Resource):
         if code is not True:
             return code
 
-        a = datetime.datetime.now() + datetime.timedelta(minutes=minutes)
-        expires = time.mktime(a.timetuple())
+        tmp = datetime.datetime.now() + datetime.timedelta(minutes=minutes)
+        expires = time.mktime(tmp.timetuple())
         token = jwt.encode({'exp': expires, 'id': id},
                            self.privateKey, algorithm='RS256')
 
