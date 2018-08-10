@@ -26,11 +26,16 @@ app = Flask(__name__, template_folder='views')
 api = Api(app)
 
 # configures mongodb connectrion string
-app.config["MONGO_URI"] = "mongodb://{}:{}@{}:{}/{}".format(cfg.username,
-                                                            cfg.password,
-                                                            cfg.host,
-                                                            cfg.port,
-                                                            cfg.dbname)
+# app.config["MONGO_URI"] = "mongodb://{}:{}@{}:{}/{}".format(cfg.username,
+#                                                             cfg.password,
+#                                                             cfg.host,
+#                                                             cfg.port,
+#                                                             cfg.dbname)
+
+app.config["MONGO_URI"] = "mongodb://{}:{}/{}".format(cfg.host,
+                                                      cfg.port,
+                                                      cfg.dbname)
+
 # creates the model
 model = Model(PyMongo(app))
 
@@ -38,7 +43,7 @@ model = Model(PyMongo(app))
 api.add_resource(ControllerHome, '/',
                  resource_class_kwargs={'model': model})
 
-api.add_resource(ControllerSats, '/sats/<token>',
+api.add_resource(ControllerSats, '/sats',
                  resource_class_kwargs={'model': model,
                                         'publicKey': secretKey['public']})
 

@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h4>SATS</h4>
+  <div id="mapid"></div>
+  <h5>Point 1</h5>
+  <div id="lat1"></div>
+  <div id="lng1"></div>
+  <h5>Point 2</h5>
+  <div id="lat2"></div>
+  <div id="lng2"></div>
+{% endblock %}
+
+{% block style %}
+  <style>
+    #mapid {
+      width: 500px;
+      height: 500px;
+    }
+  </style>
+{% endblock %}
+
+{% block jscript %}
+  <script>
+    var latlng = [18.545715, -88.265357];
+    var bounds = []
+    var myArea = null
+    var myAreaFlag = false
+    marker1 = null
+    marker2 = null
+
+    // set up the map
+    mymap = new L.Map('mapid');
+
+    // create the tile layer with correct attribution
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 4, maxZoom: 12, attribution: osmAttrib});
+
+    // start the map in South-East England
+    mymap.setView(latlng, 8);
+    mymap.addLayer(osm);
+
+    function onMapClick(e) {
+      if (myAreaFlag == false){
+        if (bounds.length == 0){
+          bounds.push(e.latlng);
+          marker1 = L.marker(e.latlng, {draggable:'true'}).addTo(mymap);
+          marker1.on('drag', onmarker1);
+        } else {
+          if (myArea != null){
+            mymap.removeLayer(myArea)
+            mymap.removeLayer(marker2)
+          }
+          bounds[1] = e.latlng;
+          marker2 = L.marker(e.latlng, {draggable:'true'}).addTo(mymap);
+          marker2.on('drag', onmarker2);
+          myArea = L.rectangle(bounds, {color: "#0040ff", weight: 1}).addTo(mymap);
+          myAreaFlag = true
+        }
+      }
+    }
+
+    mymap.on('click', onMapClick);
+
+    function onmarker1(e){
+      if (myArea != null){
+        mymap.removeLayer(myArea)
+      }
+      bounds[0] = marker1.getLatLng();;
+      myArea = L.rectangle(bounds, {color: "#0040ff", weight: 1}).addTo(mymap);
+      showLatlng()
+    }
+
+    function onmarker2(e){
+      if (myArea != null){
+        mymap.removeLayer(myArea)
+      }
+      bounds[1] = marker2.getLatLng();;
+      myArea = L.rectangle(bounds, {color: "#0040ff", weight: 1}).addTo(mymap);
+      showLatlng()
+    }
+
+    function showLatlng(){
+      document.getElementById("lat1").innerHTML = bounds[0].lat;
+      document.getElementById("lng1").innerHTML = bounds[0].lng;
+      document.getElementById("lat2").innerHTML = bounds[1].lat;
+      document.getElementById("lng2").innerHTML = bounds[1].lng;
+    }
+
+  </script>
+{% endblock %}
